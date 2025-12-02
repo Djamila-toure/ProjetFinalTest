@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Générateur de Datasets</title>
+    <style>
+        /* ======= CSS intégré ======= */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 2rem;
+            color: white;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        input, select, button {
+            padding: 0.7rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #a6c1ee;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #fbc2eb;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+        th {
+            background-color: #a6c1ee;
+            color: white;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Générateur de Datasets</h1>
+</header>
+
+<div class="container">
+    <!-- Formulaire création Projet -->
+    <div>
+        <div class="section-title">Créer un nouveau projet</div>
+        <form th:action="@{/projects}" th:object="${project}" method="post">
+            <input type="text" th:field="*{name}" placeholder="Nom du projet" required/>
+            <input type="text" th:field="*{description}" placeholder="Description du projet" required/>
+            <button type="submit">Créer Projet</button>
+        </form>
+    </div>
+
+    <!-- Formulaire création Entité -->
+    <div style="margin-top: 2rem;">
+        <div class="section-title">Ajouter une entité à un projet</div>
+        <form th:action="@{/entities}" th:object="${entity}" method="post">
+            <select th:field="*{project.id}" required>
+                <option value="" disabled selected>Choisir le projet</option>
+                <option th:each="p : ${projects}" th:value="${p.id}" th:text="${p.name}"></option>
+            </select>
+            <input type="text" th:field="*{name}" placeholder="Nom de l'entité" required/>
+            <button type="submit">Ajouter Entité</button>
+        </form>
+    </div>
+
+    <!-- Formulaire création Attribut -->
+    <div style="margin-top: 2rem;">
+        <div class="section-title">Ajouter un attribut à une entité</div>
+        <form th:action="@{/attributes}" th:object="${attribute}" method="post">
+            <select th:field="*{entity.id}" required>
+                <option value="" disabled selected>Choisir l'entité</option>
+                <option th:each="e : ${entities}" th:value="${e.id}" th:text="${e.name}"></option>
+            </select>
+            <input type="text" th:field="*{name}" placeholder="Nom de l'attribut" required/>
+            <select th:field="*{type}" required>
+                <option value="" disabled selected>Type</option>
+                <option value="STRING">STRING</option>
+                <option value="INTEGER">INTEGER</option>
+                <option value="FLOAT">FLOAT</option>
+                <option value="BOOLEAN">BOOLEAN</option>
+                <option value="DATE">DATE</option>
+            </select>
+            <button type="submit">Ajouter Attribut</button>
+        </form>
+    </div>
+
+    <!-- Liste des projets -->
+    <div style="margin-top: 2rem;">
+        <div class="section-title">Liste des projets</div>
+        <table>
+            <thead>
+            <tr>
+                <th>Nom Projet</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${projects}">
+                <td th:text="${p.name}">Nom Projet</td>
+                <td th:text="${p.description}">Description</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
