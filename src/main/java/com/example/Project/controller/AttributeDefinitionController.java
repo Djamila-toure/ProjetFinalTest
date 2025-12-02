@@ -1,6 +1,5 @@
 package com.example.Project.controller;
 
-
 import com.example.Project.model.AttributeDefinition;
 import com.example.Project.service.AttributeDefinitionService;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +19,9 @@ public class AttributeDefinitionController {
         return service.getAll();
     }
 
-    @GetMapping("/{id}")
-    public AttributeDefinition getById(@PathVariable Long id) {
-        return service.getById(id);
-    }
-
     @PostMapping
-    public AttributeDefinition save(@RequestBody AttributeDefinition attributeDefinition) {
-        return service.save(attributeDefinition);
+    public AttributeDefinition create(@RequestBody AttributeDefinition attribute) {
+        return service.save(attribute);
     }
 
     @DeleteMapping("/{id}")

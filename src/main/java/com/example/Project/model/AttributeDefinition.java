@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttributeDefinition {
@@ -20,6 +19,5 @@ public class AttributeDefinition {
     private AttributeType type;
 
     @ManyToOne
-    @JoinColumn(name = "entity_id")
     private EntityDefinition entity;
 }

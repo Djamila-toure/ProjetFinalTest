@@ -6,8 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EntityDefinition {
@@ -19,9 +18,8 @@ public class EntityDefinition {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(mappedBy = "entity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "entity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AttributeDefinition> attributes;
 }
